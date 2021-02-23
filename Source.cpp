@@ -51,15 +51,44 @@ private:
 	int i;
 	
 public:
-	SDL_Texture* armor= NULL, *weapon= NULL, *body = NULL;
+	SDL_Texture* armor= NULL, *r_weapon= NULL, * l_weapon = NULL, *body = NULL;
+	SDL_Rect weapon_out_rect, weapon_inp_rect;
+	
 	parts scrap;
 	void init_body(SDL_Texture* new_body) {
 		body = new_body;
+		weapon_out_rect.w = 160;
+		weapon_out_rect.h = 160;
+		weapon_inp_rect.h = 32;
+		weapon_inp_rect.w = 32;
 	}
+	
 	void draw(SDL_Renderer* ren, SDL_Rect box, int napr) {
+		weapon_out_rect.y = box.y;
+		if (napr == 32) {
+			weapon_out_rect.x = box.x + 45;
+			SDL_RenderCopy(ren, r_weapon, &weapon_inp_rect, &weapon_out_rect);
+			weapon_out_rect.x -= 80;
+			SDL_RenderCopy(ren, l_weapon, &weapon_inp_rect, &weapon_out_rect);
+		}
+		
 		SDL_RenderCopy(ren, body, &block32, &box);
 		SDL_RenderCopy(ren, armor, &block32, &box); 
-		
+		//cout << napr << endl;
+		if (napr == 64) {
+			weapon_out_rect.x = box.x + 5;
+			SDL_RenderCopy(ren, r_weapon, &weapon_inp_rect, &weapon_out_rect);
+		}
+		if (napr == 96) {
+			weapon_out_rect.x = box.x - 5;
+			SDL_RenderCopy(ren, l_weapon, &weapon_inp_rect, &weapon_out_rect);
+		}
+		if (napr == 0) {
+			weapon_out_rect.x = box.x + 35;
+			SDL_RenderCopy(ren, l_weapon, &weapon_inp_rect, &weapon_out_rect);
+			weapon_out_rect.x -= 80;
+			SDL_RenderCopy(ren, r_weapon, &weapon_inp_rect, &weapon_out_rect);
+		}
 	}
 
 };
@@ -82,7 +111,7 @@ int main(int argc,char *argv[]) {
 	SDL_GLContext glContext = SDL_GL_CreateContext(win);
 
 	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-	float center[] = { window_width / 2, window_height / 2 }, mouse[2];
+	
 	SDL_SetRenderDrawColor(ren, 100, 0, 0, 255);
 	SDL_RenderClear(ren);
 
@@ -102,8 +131,7 @@ int main(int argc,char *argv[]) {
 	i = 1;
 
 	SDL_Texture *grass = create_textureFromPng(ren,"grass.png");
-	SDL_Texture* black = create_textureFromPng(ren, "blackbody.png");
-	SDL_Texture* robe = create_textureFromPng(ren, "robe_white.png");
+	
 	SDL_Rect grass_block;
 	
 	block32.w = 32;
@@ -131,11 +159,13 @@ int main(int argc,char *argv[]) {
 	player.scrap.init_part(3, "r_arm", 30, 0, 8);
 	player.scrap.init_part(4, "l_leg", 40, 0, 10);
 	player.scrap.init_part(5, "r_leg", 40, 0, 10);
-	player.armor = robe;
-	player.init_body(black);
-
+	player.armor = create_textureFromPng(ren, "robe_white.png");
+	player.init_body(create_textureFromPng(ren, "blackbody.png"));
+	//player.l_weapon = create_textureFromPng(ren, "staff.png");
+	player.r_weapon = create_textureFromPng(ren, "staff.png");
 	int tick = 0;
-
+	int pol_window_width = window_width / 2, pol_window_height = window_height/ 2;
+	float center[] = { pol_window_width, pol_window_height }, mouse[2];
 	int trigy = 0;
 	while (game) 
 	{
@@ -194,13 +224,13 @@ int main(int argc,char *argv[]) {
 		SDL_Delay(fps);
 
 		
-		if ((window_width / 2 - mouse[0] < 0) && (-window_width / 2 + mouse[0] > abs(window_height / 2 - mouse[1]))) {
+		if ((pol_window_width - mouse[0] < 0) && (-pol_window_width + mouse[0] > abs(pol_window_height - mouse[1]))) {
 			block32.x = 64;
 		}
-		else if ((window_height / 2 - mouse[1] < 0) && (abs(-window_width / 2 + mouse[0]) < -window_height / 2 + mouse[1])) {
+		else if ((pol_window_height - mouse[1] < 0) && (abs(-pol_window_width + mouse[0]) < -pol_window_height + mouse[1])) {
 			block32.x = 0;
 		}
-		else if ((window_width / 2 - mouse[0] > 0) && (window_width / 2 - mouse[0] > abs(-window_height / 2 + mouse[1]))) {
+		else if ((pol_window_width - mouse[0] > 0) && (pol_window_width - mouse[0] > abs(-pol_window_height + mouse[1]))) {
 			block32.x = 96;
 		}
 		else {
@@ -224,9 +254,9 @@ int main(int argc,char *argv[]) {
 		
 		rect.y = window_height * 3 / 4 - mouse[1] / 2 - 80+trigy;
 		rect.x = window_width * 3 / 4 - mouse[0] / 2 - 80;
-		map.y = pos[1]+window_height / 2 - mouse[1]/2;
+		map.y = pos[1]+pol_window_height - mouse[1]/2;
 		for (i = 0; i < 10; i++) {
-			map.x = pos[0]+window_width / 2 - mouse[0]/2;
+			map.x = pos[0]+pol_window_width - mouse[0]/2;
 			for (i2 = 0; i2 < 10; i2++) {
 
 				SDL_RenderCopy(ren, peps_tex, NULL, &map);
