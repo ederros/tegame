@@ -44,7 +44,12 @@ public:
 
 	};
 };
+void hor_mirror_surface(SDL_Surface* sur,int w, int h) {
+	sur->pixels;
+	
+	SDL_RenderReadPixels;
 
+}
 class humanoid
 {
 private:
@@ -63,13 +68,15 @@ public:
 		weapon_inp_rect.w = 32;
 	}
 	
+
+
 	void draw(SDL_Renderer* ren, SDL_Rect box, int napr) {
 		weapon_out_rect.y = box.y;
 		if (napr == 32) {
 			weapon_out_rect.x = box.x + 45;
-			SDL_RenderCopy(ren, r_weapon, &weapon_inp_rect, &weapon_out_rect);
+			SDL_RenderCopy(ren, r_weapon, &block32, &weapon_out_rect);
 			weapon_out_rect.x -= 80;
-			SDL_RenderCopy(ren, l_weapon, &weapon_inp_rect, &weapon_out_rect);
+			SDL_RenderCopy(ren, l_weapon, &block32, &weapon_out_rect);
 		}
 		
 		SDL_RenderCopy(ren, body, &block32, &box);
@@ -77,17 +84,17 @@ public:
 		//cout << napr << endl;
 		if (napr == 64) {
 			weapon_out_rect.x = box.x + 5;
-			SDL_RenderCopy(ren, r_weapon, &weapon_inp_rect, &weapon_out_rect);
+			SDL_RenderCopy(ren, r_weapon, &block32, &weapon_out_rect);
 		}
 		if (napr == 96) {
 			weapon_out_rect.x = box.x - 5;
-			SDL_RenderCopy(ren, l_weapon, &weapon_inp_rect, &weapon_out_rect);
+			SDL_RenderCopy(ren, l_weapon, &block32, &weapon_out_rect);
 		}
 		if (napr == 0) {
 			weapon_out_rect.x = box.x + 35;
-			SDL_RenderCopy(ren, l_weapon, &weapon_inp_rect, &weapon_out_rect);
+			SDL_RenderCopy(ren, l_weapon, &block32, &weapon_out_rect);
 			weapon_out_rect.x -= 80;
-			SDL_RenderCopy(ren, r_weapon, &weapon_inp_rect, &weapon_out_rect);
+			SDL_RenderCopy(ren, r_weapon, &block32, &weapon_out_rect);
 		}
 	}
 
@@ -151,6 +158,8 @@ int main(int argc,char *argv[]) {
 	rect.x = window_width/2-rect.w/2;
 	rect.y = window_height/2-rect.h/2;
 
+
+
 	humanoid player;
 	player.scrap.init(6);
 	player.scrap.init_part(0, "body", 50, 1,35);
@@ -161,7 +170,7 @@ int main(int argc,char *argv[]) {
 	player.scrap.init_part(5, "r_leg", 40, 0, 10);
 	player.armor = create_textureFromPng(ren, "robe_white.png");
 	player.init_body(create_textureFromPng(ren, "blackbody.png"));
-	//player.l_weapon = create_textureFromPng(ren, "staff.png");
+	player.l_weapon = create_textureFromPng(ren, "staff.png");
 	player.r_weapon = create_textureFromPng(ren, "staff.png");
 	int tick = 0;
 	int pol_window_width = window_width / 2, pol_window_height = window_height/ 2;

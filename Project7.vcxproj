@@ -122,7 +122,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\libs\SDL2_image-2.0.5\lib\x64;C:\libs\SDL2\lib\x64;C:\libs\Glut\lib\x64;C:\libs\OpenGl\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glfw3dll.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,7 +141,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\libs\SDL2_image-2.0.5\lib\x64;C:\libs\SDL2\lib\x64;C:\libs\Glut\lib\x64;C:\libs\OpenGl\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glfw3dll.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
