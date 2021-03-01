@@ -100,11 +100,16 @@ public:
 
 };
 
+void slow_motion(int ) {
+
+}
+
 int main(int argc,char *argv[]) {
 	int i,i2,fps=1000/60;
 	string gamemode;
 	stringstream out;
 	bool game = 1;
+	int tim = 0;
 	//float scaledscreen=1.25;
 	//cout << "input scren scale(default 1):"; cin >> scaledscreen;
 
@@ -170,7 +175,7 @@ int main(int argc,char *argv[]) {
 	player.scrap.init_part(5, "r_leg", 40, 0, 10);
 	player.armor = create_textureFromPng(ren, "robe_white.png");
 	player.init_body(create_textureFromPng(ren, "blackbody.png"));
-	player.l_weapon = create_textureFromPng(ren, "staff.png");
+	//player.l_weapon = create_textureFromPng(ren, "staff.png");
 	player.r_weapon = create_textureFromPng(ren, "staff.png");
 	int tick = 0;
 	int pol_window_width = window_width / 2, pol_window_height = window_height/ 2;
@@ -233,13 +238,13 @@ int main(int argc,char *argv[]) {
 		SDL_Delay(fps);
 
 		
-		if ((pol_window_width - mouse[0] < 0) && (-pol_window_width + mouse[0] > abs(pol_window_height - mouse[1]))) {
+		if ((pol_window_width - mouse[0] < 0) && (-pol_window_width + mouse[0] >= abs(pol_window_height - mouse[1]))) {
 			block32.x = 64;
 		}
-		else if ((pol_window_height - mouse[1] < 0) && (abs(-pol_window_width + mouse[0]) < -pol_window_height + mouse[1])) {
+		else if ((pol_window_height - mouse[1] < 0) && (abs(-pol_window_width + mouse[0]) <= -pol_window_height + mouse[1])) {
 			block32.x = 0;
 		}
-		else if ((pol_window_width - mouse[0] > 0) && (pol_window_width - mouse[0] > abs(-pol_window_height + mouse[1]))) {
+		else if ((pol_window_width - mouse[0] > 0) && (pol_window_width - mouse[0] >= abs(-pol_window_height + mouse[1]))) {
 			block32.x = 96;
 		}
 		else {
@@ -253,6 +258,8 @@ int main(int argc,char *argv[]) {
 			if (tick%150 >= 75) { rect.h += 1; trigy-=1; }
 		}
 
+
+
 		if (tick >= 1200)
 		{
 			rect.h = 160;
@@ -261,7 +268,7 @@ int main(int argc,char *argv[]) {
 
 
 		
-		rect.y = window_height * 3 / 4 - mouse[1] / 2 - 80+trigy;
+		rect.y = window_height * 3 / 4 - mouse[1] / 2 -rect.h;
 		rect.x = window_width * 3 / 4 - mouse[0] / 2 - 80;
 		map.y = pos[1]+pol_window_height - mouse[1]/2;
 		for (i = 0; i < 10; i++) {
